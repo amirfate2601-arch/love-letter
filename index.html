@@ -16,7 +16,6 @@ p{font-size:15px;line-height:2.1;color:#765563}
 .heart{font-size:36px;color:#bd6b84;animation:pulse 1.5s infinite}
 @keyframes pulse{50%{transform:scale(1.16)}}
 button{border:0;border-radius:999px;background:linear-gradient(135deg,#b45f7a,#984c68);color:white;padding:13px 24px;font:600 14px Vazirmatn,sans-serif;cursor:pointer;box-shadow:0 8px 18px #a9547033;margin:5px}
-button.secondary{background:#f1dfe5;color:#8d4b63;box-shadow:none}
 button:hover{filter:brightness(1.06)}
 .actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}
 .hidden{display:none!important}
@@ -59,7 +58,6 @@ input{width:min(100%,280px);padding:13px 16px;border:1px solid #e5c5d0;border-ra
 <p id="teaseText">عه! این‌قدر عجله؟ 😂<br>نامه که فرار نمی‌کنه... یا شاید هم بکنه؟</p>
 <div class="actions">
 <button id="trickBtn">نامه رو بده! 😇</button>
-<button class="secondary" onclick="showStage(3)">باشه، بریم مرحله بعد 🙄</button>
 </div>
 <p class="small" id="teaseCount">۷ تا غافلگیری در راهه...</p>
 </section>
@@ -68,12 +66,10 @@ input{width:min(100%,280px);padding:13px 16px;border:1px solid #e5c5d0;border-ra
 <h1>مرحله دوم: آزمون هوش خیلی مهم!</h1>
 <div class="heart">🧩</div>
 <p>یه سؤال کوچولو...</p>
-<p>من چهار رقم دارم؛ اولم یکی، آخرم چهار. چی‌ام؟</p>
-<input id="riddleAnswer" type="text" inputmode="numeric" placeholder="جوابت رو بنویس">
+<p>رمز چهار تا صفره. 😉</p>
 <div class="actions">
-<button onclick="checkRiddle()">ثبت جواب ✨</button>
+<button onclick="showStage(4)">ادامه 💗</button>
 </div>
-<div class="feedback" id="riddleFeedback"></div>
 </section>
 
 <section class="panel hidden" id="stage4">
@@ -86,7 +82,7 @@ input{width:min(100%,280px);padding:13px 16px;border:1px solid #e5c5d0;border-ra
 <button onclick="checkPassword()">باز کردن قفل 🔓</button>
 </div>
 <div class="feedback" id="passwordFeedback"></div>
-<p class="small">راهنمایی: رمزی که برات انتخاب شده، چهار رقمیه.</p>
+<p class="small">راهنمایی: رمز چهار تا صفره.</p>
 </section>
 
 <section class="panel hidden" id="stage5">
@@ -101,7 +97,7 @@ input{width:min(100%,280px);padding:13px 16px;border:1px solid #e5c5d0;border-ra
 </div>
 </div>
 <div class="actions">
-<button id="openLetter">باز شدن نامه... 💌</button>
+<button id="openLetter">باز کردن نامه 💌</button>
 </div>
 <div class="letter" id="letter">
 <p>نمی‌دونم از کجا شروع کنم، فقط می‌دونم دلم می‌خواست یه جوری بهت بگم که چقدر برام عزیزی.</p>
@@ -117,7 +113,7 @@ input{width:min(100%,280px);padding:13px 16px;border:1px solid #e5c5d0;border-ra
 </main>
 
 <script>
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
 function showStage(number){
   for(let i=1;i<=5;i++){
@@ -154,8 +150,8 @@ function moveButton(){
 
   const area=$('trickBtn').parentElement;
   const btn=$('trickBtn');
-
   const maxX=Math.max(0,area.clientWidth-btn.offsetWidth-12);
+
   btn.style.transform=`translate(${Math.random()*maxX-maxX/2}px,${Math.random()*35-15}px)`;
 
   if(tries>=7){
@@ -171,41 +167,26 @@ function normalizeDigits(value){
     .replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
 }
 
-function checkRiddle(){
-  const answer=normalizeDigits($('riddleAnswer').value.trim());
-
-  if(answer==='1234'){
-    $('riddleFeedback').textContent='آفرین! جواب درست بود! ❤️';
-    setTimeout(()=>showStage(4),800);
-  }else{
-    $('riddleFeedback').textContent='نه، یه بار دیگه فکر کن! 😉';
-  }
-}
-
 function checkPassword(){
   const password=normalizeDigits($('password').value.trim());
 
-  if(password==='1384'){
-    $('passwordFeedback').textContent='رمز درست بود! پاکت آماده‌ست ❤️';
-    setTimeout(()=>showStage(5),800);
+  if(password==='0000'){
+    $('passwordFeedback').textContent='رمز درست بود! ❤️';
+    setTimeout(()=>showStage(5),400);
   }else{
-    $('passwordFeedback').textContent='رمز اشتباهه! دوباره امتحان کن 🤭';
+    $('passwordFeedback').textContent='رمز اشتباهه! دوباره امتحان کن ❤️';
   }
 }
 
-$('openLetter').addEventListener('click',()=>{
+$('password').addEventListener('keydown',function(event){
+  if(event.key==='Enter')checkPassword();
+});
+
+$('openLetter').addEventListener('click',function(){
   $('envelope').classList.add('open');
   $('letter').classList.add('show');
   $('openLetter').classList.add('hidden');
   $('ending').classList.remove('hidden');
-});
-
-$('password').addEventListener('keydown',e=>{
-  if(e.key==='Enter')checkPassword();
-});
-
-$('riddleAnswer').addEventListener('keydown',e=>{
-  if(e.key==='Enter')checkRiddle();
 });
 </script>
 </body>
