@@ -170,7 +170,7 @@ function normalizeDigits(value){
 function checkPassword(){
   const password=normalizeDigits($('password').value.trim());
 
-  if(password==='0000'){
+  if(password==='1384'){
     $('passwordFeedback').textContent='رمز درست بود! ❤️';
     setTimeout(()=>showStage(5),400);
   }else{
